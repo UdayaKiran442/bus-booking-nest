@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
 
+import { BusServiceNumberModule } from './busService.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({}),
@@ -18,6 +20,7 @@ import { AppService } from '../services/app.service';
       entities: [],
       synchronize: true,
     }),
+    BusServiceNumberModule,
   ],
   controllers: [AppController],
   providers: [AppService],
