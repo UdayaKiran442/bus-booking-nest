@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 
 import { Service } from 'src/entities/service.entity';
 
-import { BusServiceNumberDTO } from 'src/dto/busServiceNumber.dto';
+import {
+  AddAvailableDaysDTO,
+  AddViaDTO,
+  BusServiceNumberDTO,
+} from 'src/dto/busServiceNumber.dto';
 
 @Injectable()
 export class BusServiceNumberService {
@@ -45,5 +49,24 @@ export class BusServiceNumberService {
     } else {
       return null;
     }
+  }
+
+  async addViaRoute(serviceNumber: string, addViaDto: AddViaDTO) {
+    const service = await this.serviceRepository.findOneBy({ serviceNumber });
+    if (!service) return null;
+    service.via.push(addViaDto.via);
+    this.serviceRepository.save(service);
+    return service;
+  }
+
+  async addAvailableDays(
+    serviceNumber: string,
+    addAvailableDto: AddAvailableDaysDTO,
+  ) {
+    const service = await this.serviceRepository.findOneBy({ serviceNumber });
+    if (!service) return null;
+    service?.availableDays?.push(addAvailableDto.availableDays);
+    this.serviceRepository.save(service);
+    return service;
   }
 }

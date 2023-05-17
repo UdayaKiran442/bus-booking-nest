@@ -10,7 +10,11 @@ import {
 import { Response } from 'express';
 
 import { BusServiceNumberService } from '../services/busService.service';
-import { BusServiceNumberDTO } from 'src/dto/busServiceNumber.dto';
+import {
+  AddAvailableDaysDTO,
+  AddViaDTO,
+  BusServiceNumberDTO,
+} from 'src/dto/busServiceNumber.dto';
 import { Service } from 'src/entities/service.entity';
 
 @Controller()
@@ -57,5 +61,37 @@ export class BusServiceNumberController {
         .status(HttpStatus.BAD_REQUEST)
         .json({ error: 'Service number already exists' });
     }
+  }
+  @Post('/service/add-via-route/:number')
+  async addVia(
+    @Res() res: Response,
+    @Body() addViaDto: AddViaDTO,
+    @Param() param: any,
+  ): Promise<Response<Service>> {
+    const service = await this.busServiceNumberService.addViaRoute(
+      param.number,
+      addViaDto,
+    );
+    if (!service) return res.json({ error: 'Invalid service number' });
+    return res.json({
+      message: 'Via route added',
+      service,
+    });
+  }
+  @Post('/service/add-available/:number')
+  async addAvailable(
+    @Res() res: Response,
+    @Body() addAvailableDto: AddAvailableDaysDTO,
+    @Param() param: any,
+  ): Promise<Response<Service>> {
+    const service = await this.busServiceNumberService.addAvailableDays(
+      param.number,
+      addAvailableDto,
+    );
+    if (!service) return res.json({ error: 'Invalid service number' });
+    return res.json({
+      message: 'Available days added',
+      service,
+    });
   }
 }
