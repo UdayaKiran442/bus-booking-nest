@@ -32,7 +32,7 @@ export class BusServiceNumberService {
     newService.serviceNumber = busServiceNumberDTO.serviceNumber;
     newService.from = busServiceNumberDTO.from;
     newService.to = busServiceNumberDTO.to;
-    newService.availableDays = [];
+    newService.availableDays = busServiceNumberDTO.availableDays;
     newService.via = [];
     newService.buses = [];
     return await this.serviceRepository.save(newService);
