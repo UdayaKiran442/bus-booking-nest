@@ -28,6 +28,5 @@ export class Service {
   availableDays: string[];
 
   @OneToMany(() => Bus, (bus) => bus.service)
-  @JoinColumn({ name: 'bus_id' })
   buses: Bus[];
 }

@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 
 import { Service } from './service.entity';
@@ -25,7 +24,6 @@ export class Bus {
   numberPlate: string;
 
   @ManyToOne(() => Service, (service) => service.buses)
-  @JoinColumn({ name: 'service_id' })
   service: Service;
 
   @OneToMany(() => Seat, (seat) => seat.bus)

@@ -35,7 +35,11 @@ export class BusServiceNumberService {
   }
 
   async getDetailsByServiceNumber(serviceNumber: string) {
-    const service = await this.serviceRepository.findOneBy({ serviceNumber });
+    const service = await this.serviceRepository
+      .createQueryBuilder('service')
+      .leftJoinAndSelect('service.buses', 'bus')
+      .where('service.serviceNumber = :serviceNumber', { serviceNumber })
+      .getOne();
     if (service) {
       return service;
     } else {

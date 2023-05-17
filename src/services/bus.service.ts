@@ -18,6 +18,19 @@ export class BusService {
     return 'Hello';
   }
 
+  async getBusesById(id: number): Promise<Bus> {
+    // const bus = await this.busRepository.findOneBy({ id });
+    // if (!bus) return null;
+    // return bus;
+    const bus = await this.busRepository
+      .createQueryBuilder('bus')
+      .leftJoinAndSelect('bus.service', 'service')
+      .where('bus.id = :id', { id })
+      .getOne();
+    if (!bus) return null;
+    return bus;
+  }
+
   async addBus(addBusDto: AddBusDTO): Promise<Bus> {
     const service = await this.busServiceNumberRepository.findOneBy({
       serviceNumber: addBusDto.serviceNumber,

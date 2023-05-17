@@ -1,4 +1,12 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Param,
+  Post,
+  Res,
+  Get,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { AddBusDTO } from 'src/dto/bus.dto';
@@ -10,6 +18,16 @@ import { BusService } from 'src/services/bus.service';
 @Controller()
 export class BusController {
   constructor(private readonly busService: BusService) {}
+
+  @Get('/bus/:id')
+  async getBusById(
+    @Param() param: any,
+    @Res() res: Response,
+  ): Promise<Response<Bus>> {
+    const bus = await this.busService.getBusesById(param.id);
+    if (!bus) return res.status(HttpStatus.NOT_FOUND).json({ bus });
+    return res.status(HttpStatus.FOUND).json({ bus });
+  }
 
   @Post('/bus/new-bus')
   async addBus(
