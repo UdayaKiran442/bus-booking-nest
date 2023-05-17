@@ -15,10 +15,10 @@ export class Service {
   @Column()
   to: string;
 
-  @Column({ array: true })
+  @Column('simple-array', { default: () => 'ARRAY[]::varchar[]' })
   via: string[];
 
-  @Column({ array: true })
+  @Column('simple-array', { default: () => 'ARRAY[]::varchar[]' })
   availableDays: string[];
 
   @OneToMany(() => Bus, (bus) => bus.service)
