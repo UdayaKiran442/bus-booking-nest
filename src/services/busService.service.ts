@@ -21,14 +21,17 @@ export class BusServiceNumberService {
     const isServiceNumber = await this.serviceRepository.findOneBy({
       serviceNumber: busServiceNumberDTO.serviceNumber,
     });
-    if (isServiceNumber) {
-      return null;
-    } else {
-      const newServiceNumber =
-        this.serviceRepository.create(busServiceNumberDTO);
-      newServiceNumber.buses = [];
-      return await this.serviceRepository.save(busServiceNumberDTO);
-    }
+    if (isServiceNumber) return null;
+    // this.serviceRepository.create(busServiceNumberDTO);
+    // return await this.serviceRepository.save(busServiceNumberDTO);
+    const newService = new Service();
+    newService.serviceNumber = busServiceNumberDTO.serviceNumber;
+    newService.from = busServiceNumberDTO.from;
+    newService.to = busServiceNumberDTO.to;
+    newService.availableDays = [];
+    newService.via = [];
+    newService.buses = [];
+    return await this.serviceRepository.save(newService);
   }
 
   async getDetailsByServiceNumber(serviceNumber: string) {

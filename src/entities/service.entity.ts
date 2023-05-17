@@ -1,5 +1,11 @@
 import { Bus } from './bus.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Service {
@@ -22,5 +28,6 @@ export class Service {
   availableDays: string[];
 
   @OneToMany(() => Bus, (bus) => bus.service)
+  @JoinColumn({ name: 'bus_id' })
   buses: Bus[];
 }

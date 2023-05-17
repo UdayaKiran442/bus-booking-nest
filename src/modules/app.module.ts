@@ -10,6 +10,7 @@ import { BusServiceNumberModule } from './busService.module';
 import { Service } from 'src/entities/service.entity';
 import { Bus } from 'src/entities/bus.entity';
 import { Seat } from 'src/entities/seat.entity';
+import { BusModule } from './bus.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { Seat } from 'src/entities/seat.entity';
       synchronize: true,
     }),
     BusServiceNumberModule,
+    BusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
