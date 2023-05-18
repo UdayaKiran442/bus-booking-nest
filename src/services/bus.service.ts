@@ -25,6 +25,7 @@ export class BusService {
     const bus = await this.busRepository
       .createQueryBuilder('bus')
       .leftJoinAndSelect('bus.service', 'service')
+      .leftJoinAndSelect('bus.seats', 'seat')
       .where('bus.id = :id', { id })
       .getOne();
     if (!bus) return null;

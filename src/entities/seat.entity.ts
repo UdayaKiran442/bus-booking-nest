@@ -12,7 +12,7 @@ export class Seat {
   @Column()
   column: number;
 
-  @Column()
+  @Column({ default: true })
   isAvailable: boolean;
 
   @Column({ enum: ['window', 'aisel'] })
