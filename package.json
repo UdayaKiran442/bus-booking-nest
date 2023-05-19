@@ -27,13 +27,17 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
+    "@types/bcrypt": "^5.0.0",
+    "bcrypt": "^5.1.0",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.16"
+    "typeorm": "^0.3.16",
+    "util": "^0.12.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

@@ -9,10 +9,12 @@ import { AppService } from '../services/app.service';
 import { BusServiceNumberModule } from './busService.module';
 import { BusModule } from './bus.module';
 import { SeatModule } from './seat.module';
+import { UsersModule } from './users.module';
 
 import { Service } from 'src/entities/service.entity';
 import { Bus } from 'src/entities/bus.entity';
 import { Seat } from 'src/entities/seat.entity';
+import { User } from 'src/entities/user.entity';
 
 @Module({
   imports: [
@@ -24,12 +26,13 @@ import { Seat } from 'src/entities/seat.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'nest-bus-booking',
-      entities: [Service, Bus, Seat],
+      entities: [Service, Bus, Seat, User],
       synchronize: true,
     }),
     BusServiceNumberModule,
     BusModule,
     SeatModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
