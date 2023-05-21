@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 
-import { CreateUserDto } from 'src/dto/user.dto';
+import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
 
 import { User } from 'src/entities/user.entity';
 
@@ -21,5 +21,16 @@ export class UserController {
       message: 'Account created succesfully',
       user,
     });
+  }
+  @Post('/user/login')
+  async loginUser(
+    @Body() loginUserDto: LoginUserDto,
+    @Res() res: Response,
+  ): Promise<Response<User>> {
+    const token = await this.userService.signInUser(
+      loginUserDto.email,
+      loginUserDto.password,
+    );
+    return res.json({ message: 'Login succesfull', token });
   }
 }

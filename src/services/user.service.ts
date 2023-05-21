@@ -30,4 +30,19 @@ export class UserService {
     user.bookings = [];
     return await this.userRepository.save(user);
   }
+
+  async signInUser(email: string, password: string) {
+    const user = await this.userRepository.findOneBy({ email });
+    if (!user) throw new Error('Invalid email');
+    const decryptedPassword = bcrypt.compare(password, user.password);
+    if (!decryptedPassword) throw new Error('Invalid password');
+    const payload = {
+      name: user.name,
+      email: user.email,
+      id: user.id,
+      isAdmin: user.isAdmin,
+    };
+    const token = this.jwtService.sign(payload);
+    return token;
+  }
 }
