@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
@@ -7,6 +15,7 @@ import { User } from 'src/entities/user.entity';
 
 import { UserService } from 'src/services/user.service';
 
+import { AuthGaurd } from 'src/auth-gaurd/auth.gaurd';
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -32,5 +41,11 @@ export class UserController {
       loginUserDto.password,
     );
     return res.json({ message: 'Login succesfull', token });
+  }
+
+  @UseGuards(AuthGaurd)
+  @Get('/user/profile')
+  getProfile(@Request() req: any) {
+    return req.user;
   }
 }
