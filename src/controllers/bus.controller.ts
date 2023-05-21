@@ -6,8 +6,12 @@ import {
   Post,
   Res,
   Get,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { Response } from 'express';
+
+import { AuthGaurd } from 'src/auth-gaurd/auth.gaurd';
 
 import { AddBusDTO } from 'src/dto/bus.dto';
 
@@ -29,11 +33,19 @@ export class BusController {
     return res.status(HttpStatus.FOUND).json({ bus });
   }
 
+  @UseGuards(AuthGaurd)
   @Post('/bus/new-bus')
   async addBus(
     @Body() addBusDto: AddBusDTO,
     @Res() res: Response,
+    @Request() req: any,
   ): Promise<Response<Bus>> {
+    const { user } = req;
+    if (!user.isAdmin) {
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ error: 'Unauthorized access' });
+    }
     const newBus = await this.busService.addBus(addBusDto);
     return res.status(HttpStatus.CREATED).json({
       message: 'Bus created',

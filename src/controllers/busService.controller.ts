@@ -5,17 +5,23 @@ import {
   HttpStatus,
   Param,
   Post,
+  Request,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { BusServiceNumberService } from '../services/busService.service';
+
 import {
   AddAvailableDaysDTO,
   AddViaDTO,
   BusServiceNumberDTO,
 } from 'src/dto/busServiceNumber.dto';
+
 import { Service } from 'src/entities/service.entity';
+
+import { AuthGaurd } from 'src/auth-gaurd/auth.gaurd';
 
 @Controller()
 export class BusServiceNumberController {
@@ -28,11 +34,19 @@ export class BusServiceNumberController {
     return this.busServiceNumberService.getHello();
   }
 
+  @UseGuards(AuthGaurd)
   @Get('/service-number-details/:number')
   async getServiceNumberDetails(
     @Res() res: Response,
     @Param() params: any,
+    @Request() req: any,
   ): Promise<Response<Service>> {
+    const { user } = req;
+    if (!user.isAdmin) {
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ error: 'Unauthorized access' });
+    }
     const service =
       await this.busServiceNumberService.getDetailsByServiceNumber(
         params.number,
@@ -46,11 +60,19 @@ export class BusServiceNumberController {
     }
   }
 
+  @UseGuards(AuthGaurd)
   @Post('/add/new-service')
   async addService(
     @Res() res: Response,
     @Body() busServiceNumberDTO: BusServiceNumberDTO,
+    @Request() req: any,
   ): Promise<Response<Service>> {
+    const { user } = req;
+    if (!user.isAdmin) {
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ error: 'Unauthorized access' });
+    }
     const newService = await this.busServiceNumberService.addService(
       busServiceNumberDTO,
     );
@@ -67,7 +89,14 @@ export class BusServiceNumberController {
     @Res() res: Response,
     @Body() addViaDto: AddViaDTO,
     @Param() param: any,
+    @Request() req: any,
   ): Promise<Response<Service>> {
+    const { user } = req;
+    if (!user.isAdmin) {
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ error: 'Unauthorized access' });
+    }
     const service = await this.busServiceNumberService.addViaRoute(
       param.number,
       addViaDto,
@@ -83,7 +112,14 @@ export class BusServiceNumberController {
     @Res() res: Response,
     @Body() addAvailableDto: AddAvailableDaysDTO,
     @Param() param: any,
+    @Request() req: any,
   ): Promise<Response<Service>> {
+    const { user } = req;
+    if (!user.isAdmin) {
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ error: 'Unauthorized access' });
+    }
     const service = await this.busServiceNumberService.addAvailableDays(
       param.number,
       addAvailableDto,
