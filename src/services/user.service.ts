@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { User } from 'src/entities/user.entity';
+import { Service } from 'src/entities/service.entity';
 
 import { CreateUserDto } from 'src/dto/user.dto';
 
@@ -13,6 +14,7 @@ import { CreateUserDto } from 'src/dto/user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Service) private serviceRepository: Repository<Service>,
     private jwtService: JwtService,
   ) {}
 
@@ -44,5 +46,17 @@ export class UserService {
     };
     const token = this.jwtService.sign(payload);
     return token;
+  }
+
+  async fetchBuses(from: string, dest: string): Promise<Service[]> {
+    const services: Service[] = [];
+    const service = await this.serviceRepository.findBy({
+      from,
+    });
+    service.map((s) => {
+      s.via.includes(dest) && services.push(s);
+      s.to === dest && services.push(s);
+    });
+    return services;
   }
 }

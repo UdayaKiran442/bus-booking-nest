@@ -10,8 +10,10 @@ import {
 import { Response } from 'express';
 
 import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
+import { FromDestDTO } from 'src/dto/from-dest.dto';
 
 import { User } from 'src/entities/user.entity';
+import { Service } from 'src/entities/service.entity';
 
 import { UserService } from 'src/services/user.service';
 
@@ -47,5 +49,17 @@ export class UserController {
   @Get('/user/profile')
   getProfile(@Request() req: any) {
     return req.user;
+  }
+
+  @Post('/bus/get-buses')
+  async getBuses(
+    @Body() fromDestDto: FromDestDTO,
+    @Res() res: Response,
+  ): Promise<Response<Service[]>> {
+    const service = await this.userService.fetchBuses(
+      fromDestDto.from,
+      fromDestDto.dest,
+    );
+    return res.json({ service });
   }
 }
