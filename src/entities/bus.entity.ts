@@ -8,6 +8,7 @@ import {
 
 import { Service } from './service.entity';
 import { Seat } from './seat.entity';
+import { Bookings } from './bookings.entity';
 
 @Entity()
 export class Bus {
@@ -28,4 +29,7 @@ export class Bus {
 
   @OneToMany(() => Seat, (seat) => seat.bus)
   seats: Seat[];
+
+  @OneToMany(() => Bookings, (bookings) => bookings.bus)
+  bookings: Bookings[];
 }

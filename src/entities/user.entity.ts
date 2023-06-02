@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+
+import { Bookings } from './bookings.entity';
 
 @Entity()
 export class User {
@@ -17,6 +19,9 @@ export class User {
   @Column({ default: false })
   isAdmin: boolean;
 
-  @Column('simple-array', { default: () => 'ARRAY[]::varchar[]' })
-  bookings: [];
+  // @Column('simple-array', { default: () => 'ARRAY[]::varchar[]' })
+  // bookings: [];
+
+  @OneToMany(() => Bookings, (bookings) => bookings.user)
+  bookings: Bookings[];
 }
