@@ -15,16 +15,17 @@ export class Bookings {
   to: string;
 
   @Column()
-  dateOfJourney: Date;
+  dateOfJourney: string;
 
   @Column()
-  dayOfJourney: Date;
+  dayOfJourney: string;
 
   @Column('simple-json')
   passengers: {
     name: string;
     gender: string;
-    seatNumber: number;
+    row: number;
+    column: number;
   }[];
 
   @ManyToOne(() => Bus, (bus) => bus.bookings)
