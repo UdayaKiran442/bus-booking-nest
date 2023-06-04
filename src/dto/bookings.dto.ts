@@ -16,6 +16,5 @@ export class BookedSeatsDTO {
 export interface Passengers {
   name: string;
   gender: string;
-  row: number;
-  column: number;
+  seatNumber: number;
 }

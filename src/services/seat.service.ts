@@ -19,12 +19,11 @@ export class SeatService {
     const bus = await this.busRepository.findOneBy({ id });
     if (!bus) return null;
     const isSeat = await this.seatRepository.findOne({
-      where: { bus: { id }, row: seatDto.row, column: seatDto.column },
+      where: { bus: { id }, seatNumber: seatDto.seatNumber },
     });
     if (isSeat) throw new Error('Seat already added');
     const seat = new Seat();
-    seat.row = seatDto.row;
-    seat.column = seatDto.column;
+    seat.seatNumber = seatDto.seatNumber;
     seat.seatType = seatDto.seatType;
     seat.bus = bus;
     seat.isAvailable = true;

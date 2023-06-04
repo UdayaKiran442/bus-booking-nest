@@ -7,10 +7,7 @@ export class Seat {
   id: number;
 
   @Column()
-  row: number;
-
-  @Column()
-  column: number;
+  seatNumber: number;
 
   @Column({ default: true })
   isAvailable: boolean;

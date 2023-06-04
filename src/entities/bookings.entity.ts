@@ -24,8 +24,7 @@ export class Bookings {
   passengers: {
     name: string;
     gender: string;
-    row: number;
-    column: number;
+    seatNumber: number;
   }[];
 
   @ManyToOne(() => Bus, (bus) => bus.bookings)

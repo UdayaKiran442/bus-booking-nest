@@ -1,5 +1,4 @@
 export class SeatDTO {
-  row: number;
-  column: number;
+  seatNumber: number;
   seatType: string;
 }
