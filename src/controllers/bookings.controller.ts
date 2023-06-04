@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { DataSource } from 'typeorm';
 
 import { AuthGaurd } from 'src/auth-gaurd/auth.gaurd';
 import { BookedSeatsDTO, BookingsDTO } from 'src/dto/bookings.dto';
@@ -17,7 +18,10 @@ import { BookingService } from 'src/services/bookings.service';
 
 @Controller()
 export class BookingsController {
-  constructor(private readonly bookingService: BookingService) {}
+  constructor(
+    private readonly bookingService: BookingService,
+    private dataSource: DataSource,
+  ) {}
 
   @UseGuards(AuthGaurd)
   @Post('/booking/new-booking')
@@ -26,14 +30,26 @@ export class BookingsController {
     @Request() req: any,
     @Res() res: Response,
   ) {
-    const newBooking = await this.bookingService.bookBus(
-      req.user.id,
-      bookingsDTO,
-    );
-    return res.status(HttpStatus.CREATED).json({
-      success: true,
-      newBooking,
-    });
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      const newBooking = await this.bookingService.bookBus(
+        req.user.id,
+        bookingsDTO,
+      );
+      await queryRunner.commitTransaction();
+      return res.status(HttpStatus.CREATED).json({
+        success: true,
+        newBooking,
+      });
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        error,
+      });
+    }
   }
   @Get('/booking/booked-seats')
   async getSeats(
