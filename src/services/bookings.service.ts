@@ -32,18 +32,20 @@ export class BookingService {
     newBooking.passengers = bookingsDto.passengers;
     return await this.bookingsRepository.save(newBooking);
   }
-  //   async getBookedSeatsOfTheBus(getBookedSeatsDTO: BookedSeatsDTO) {
-  //     const bus = await this.busRepository.findOneBy({
-  //       id: getBookedSeatsDTO.busId,
-  //     });
-  //     if (!bus) throw new NotFoundException('Bus not found');
-  //     const booking = await this.bookingsRepository.findOneBy({
-  //       bus: {
-  //         id: bus.id,
-  //       },
-  //       dateOfJourney: getBookedSeatsDTO.dateOfJourney,
-  //       dayOfJourney: getBookedSeatsDTO.dayOfJourney,
-  //     });
-  //     return booking.passengers;
-  //   }
+  async getBookedSeatsOfTheBus(getBookedSeatsDTO: BookedSeatsDTO) {
+    const bus = await this.busRepository.findOneBy({
+      id: getBookedSeatsDTO.busId,
+    });
+    if (!bus) throw new NotFoundException('Bus not found');
+    const booking = await this.bookingsRepository.findOneBy({
+      bus: {
+        id: bus.id,
+      },
+      dateOfJourney: getBookedSeatsDTO.dateOfJourney,
+      dayOfJourney: getBookedSeatsDTO.dayOfJourney,
+    });
+    const bookedSeats = [];
+    booking.passengers.map((p) => bookedSeats.push(p.seatNumber));
+    return bookedSeats;
+  }
 }

@@ -35,10 +35,17 @@ export class BookingsController {
       newBooking,
     });
   }
-  // @Get('/booked-seats')
-  // async getSeats(@Body() getBookedSeatsDto: BookedSeatsDTO) {
-  //   const bookedSeats = await this.bookingService.getBookedSeatsOfTheBus(
-  //     getBookedSeatsDto,
-  //   );
-  // }
+  @Get('/booking/booked-seats')
+  async getSeats(
+    @Body() getBookedSeatsDto: BookedSeatsDTO,
+    @Res() res: Response,
+  ) {
+    const bookedSeats = await this.bookingService.getBookedSeatsOfTheBus(
+      getBookedSeatsDto,
+    );
+    return res.json({
+      success: true,
+      bookedSeats,
+    });
+  }
 }
