@@ -37,7 +37,7 @@ export class BookingService {
       id: getBookedSeatsDTO.busId,
     });
     if (!bus) throw new NotFoundException('Bus not found');
-    const booking = await this.bookingsRepository.findOneBy({
+    const booking = await this.bookingsRepository.findBy({
       bus: {
         id: bus.id,
       },
@@ -45,7 +45,7 @@ export class BookingService {
       dayOfJourney: getBookedSeatsDTO.dayOfJourney,
     });
     const bookedSeats = [];
-    booking.passengers.map((p) => bookedSeats.push(p.seatNumber));
+    booking.map((b) => b.passengers.map((p) => bookedSeats.push(p.seatNumber)));
     return bookedSeats;
   }
 }
