@@ -59,4 +59,13 @@ export class UserService {
     });
     return services;
   }
+
+  async userProfile(id: number) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.bookings', 'bookings')
+      .where('user.id = :id', { id })
+      .getOne();
+    return user;
+  }
 }

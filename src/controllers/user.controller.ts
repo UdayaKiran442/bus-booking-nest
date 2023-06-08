@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Request,
   Res,
@@ -47,8 +48,12 @@ export class UserController {
 
   @UseGuards(AuthGaurd)
   @Get('/user/profile')
-  getProfile(@Request() req: any) {
-    return req.user;
+  async getProfile(@Request() req: any, @Res() res: Response) {
+    const user = await this.userService.userProfile(req.user.id);
+    return res.status(HttpStatus.FOUND).json({
+      success: true,
+      user,
+    });
   }
 
   @Post('/bus/get-buses')
