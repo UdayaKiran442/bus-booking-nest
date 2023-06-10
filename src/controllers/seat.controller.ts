@@ -23,7 +23,7 @@ export class SeatController {
   constructor(private readonly seatService: SeatService) {}
 
   @UseGuards(AuthGaurd)
-  @Post('/seat/new-seat/:busId')
+  @Post('/seat/new-seat/:serviceNumber')
   async addSeat(
     @Param() param: any,
     @Body() seatDto: SeatDTO,
@@ -36,8 +36,8 @@ export class SeatController {
         .status(HttpStatus.UNAUTHORIZED)
         .json({ error: 'Unauthorized access' });
     }
-    const seat = await this.seatService.addSeat(param.busId, seatDto);
-    if (!seat) return res.json({ error: 'Invalid bus id' });
+    const seat = await this.seatService.addSeat(param.serviceNumber, seatDto);
+    if (!seat) return res.json({ error: 'Invalid service number' });
     return res.json({ message: 'Seat added succesfully', seat });
   }
 }

@@ -8,10 +8,11 @@ import { Bus } from '../entities/bus.entity';
 
 import { SeatService } from 'src/services/seat.service';
 import { SeatController } from 'src/controllers/seat.controller';
+import { Service } from 'src/entities/service.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Seat, Bus]),
+    TypeOrmModule.forFeature([Seat, Bus, Service]),
     ConfigModule.forRoot({}),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

@@ -7,7 +7,6 @@ import {
 } from 'typeorm';
 
 import { Service } from './service.entity';
-import { Seat } from './seat.entity';
 import { Bookings } from './bookings.entity';
 
 @Entity()
@@ -27,8 +26,8 @@ export class Bus {
   @ManyToOne(() => Service, (service) => service.buses)
   service: Service;
 
-  @OneToMany(() => Seat, (seat) => seat.bus)
-  seats: Seat[];
+  // @OneToMany(() => Seat, (seat) => seat.bus)
+  // seats: Seat[];
 
   @OneToMany(() => Bookings, (bookings) => bookings.bus)
   bookings: Bookings[];

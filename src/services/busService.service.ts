@@ -30,11 +30,15 @@ export class BusServiceNumberService {
     // return await this.serviceRepository.save(busServiceNumberDTO);
     const newService = new Service();
     newService.serviceNumber = busServiceNumberDTO.serviceNumber;
+    newService.name = busServiceNumberDTO.name;
+    newService.type = busServiceNumberDTO.type;
     newService.from = busServiceNumberDTO.from;
     newService.to = busServiceNumberDTO.to;
-    newService.availableDays = busServiceNumberDTO.availableDays;
+    newService.departureTime = busServiceNumberDTO.departureTime;
+    newService.arrivalTime = busServiceNumberDTO.arrivalTime;
     newService.via = [];
     newService.buses = [];
+    newService.availableDays = [];
     return await this.serviceRepository.save(newService);
   }
 

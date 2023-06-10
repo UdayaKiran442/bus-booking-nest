@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Bus } from './bus.entity';
+import { Service } from './service.entity';
 
 @Entity()
 export class Seat {
@@ -15,6 +15,6 @@ export class Seat {
   @Column({ enum: ['window', 'aisel'] })
   seatType: string;
 
-  @ManyToOne(() => Bus, (bus) => bus.seats)
-  bus: Bus;
+  @ManyToOne(() => Service, (service) => service.seats)
+  service: Service;
 }
