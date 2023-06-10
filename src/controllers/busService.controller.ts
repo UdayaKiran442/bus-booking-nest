@@ -39,14 +39,7 @@ export class BusServiceNumberController {
   async getServiceNumberDetails(
     @Res() res: Response,
     @Param() params: any,
-    @Request() req: any,
   ): Promise<Response<Service>> {
-    const { user } = req;
-    if (!user.isAdmin) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ error: 'Unauthorized access' });
-    }
     const service =
       await this.busServiceNumberService.getDetailsByServiceNumber(
         params.number,
