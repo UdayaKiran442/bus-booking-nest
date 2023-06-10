@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpStatus,
   Post,
   Request,
@@ -47,7 +46,7 @@ export class UserController {
   }
 
   @UseGuards(AuthGaurd)
-  @Get('/user/profile')
+  @Post('/user/profile')
   async getProfile(@Request() req: any, @Res() res: Response) {
     const user = await this.userService.userProfile(req.user.id);
     return res.status(HttpStatus.FOUND).json({
