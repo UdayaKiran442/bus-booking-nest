@@ -31,6 +31,30 @@ export class BookingService {
         serviceNumber: bookingsDto.serviceNumber,
       });
       if (!service) throw new NotFoundException('Bus not found');
+      const booking = await this.bookingsRepository.findBy({
+        service: {
+          serviceNumber: bookingsDto.serviceNumber,
+        },
+        dateOfJourney: bookingsDto.dateOfJourney,
+        dayOfJourney: bookingsDto.dayOfJourney,
+      });
+      const bookedSeats = [];
+      booking.map((b) =>
+        b.passengers.map((p) => bookedSeats.push(p.seatNumber)),
+      );
+      const commonNumbers = [];
+      const obj = {};
+      for (let i = 0; i < bookedSeats.length; i++) {
+        obj[bookedSeats[i]] = true;
+      }
+      for (let j = 0; j < bookingsDto.passengers.length; j++) {
+        if (obj[bookingsDto.passengers[j].seatNumber]) {
+          commonNumbers.push(bookingsDto.passengers[j].seatNumber);
+        }
+      }
+      if (commonNumbers.length > 0) {
+        throw new Error('Seats already booked');
+      }
       const newBooking = new Bookings();
       newBooking.from = bookingsDto.from;
       newBooking.to = bookingsDto.to;
@@ -40,8 +64,8 @@ export class BookingService {
       newBooking.user = user;
       newBooking.passengers = bookingsDto.passengers;
       const savedBooking = await this.bookingsRepository.save(newBooking);
-      user.bookings.push(newBooking);
-      service.bookings.push(newBooking);
+      user.bookings?.push(newBooking);
+      service.bookings?.push(newBooking);
       await this.userRepository.save(user);
       await this.serviceRepository.save(service);
       await queryRunner.commitTransaction();
