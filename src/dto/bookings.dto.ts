@@ -3,12 +3,12 @@ export class BookingsDTO {
   to: string;
   dateOfJourney: string;
   dayOfJourney: string;
-  busId: number;
+  serviceNumber: string;
   passengers: Passengers[];
 }
 
 export class BookedSeatsDTO {
-  busId: number;
+  serviceNumber: string;
   dateOfJourney: string;
   dayOfJourney: string;
 }

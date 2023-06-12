@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Bus } from './bus.entity';
 import { User } from './user.entity';
+import { Service } from './service.entity';
 
 @Entity()
 export class Bookings {
@@ -27,8 +27,8 @@ export class Bookings {
     seatNumber: number;
   }[];
 
-  @ManyToOne(() => Bus, (bus) => bus.bookings)
-  bus: Bus;
+  @ManyToOne(() => Service, (service) => service.bookings)
+  service: Service;
 
   @ManyToOne(() => User, (user) => user.bookings)
   user: User;
